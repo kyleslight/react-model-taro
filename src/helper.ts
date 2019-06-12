@@ -1,18 +1,10 @@
 import produce from 'immer'
-import * as Taro from '@tarojs/taro'
 import { createContext } from '@tarojs/taro'
 import Global from './global'
 import { actionMiddlewares, applyMiddlewares } from './middlewares'
 
-type Consumer<T> = ExoticComponent<ConsumerProps<T>>
-interface Context<T> {
-  Provider: Taro.ComponentClass<{ value: T }>
-  Consumer: Consumer<T>
-  displayName?: string
-}
-
 const initialProviderState: Global['State'] = {}
-const GlobalContext: Context<any> = createContext(initialProviderState)
+const GlobalContext: any = createContext(initialProviderState)
 const Consumer = GlobalContext.Consumer
 
 // console.group polyfill

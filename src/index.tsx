@@ -203,7 +203,7 @@ const connect = (
   modelName: string,
   mapState?: Function | undefined,
   mapActions?: Function | undefined
-) => (Component: new () => Taro.Component<any, any>) =>
+) => (Component: typeof Taro.Component) =>
   class P extends PureComponent<any> {
     render() {
       const { state: prevState = {}, actions: prevActions = {} } = this.props
