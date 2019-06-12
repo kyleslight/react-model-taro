@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "target": "es6",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "jsxFactory": "Taro.createElement",
+    "lib": ["dom", "dom.iterable", "es2017"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "sourceMap": false,
+    "strict": true
+  },
+  "include": ["./src/*"],
+  "exclude": ["node_modules"]
+}
