@@ -1,23 +1,23 @@
-import produce from "immer";
-import { createContext } from "@tarojs/taro";
-import Global from "./global";
-import { actionMiddlewares, applyMiddlewares } from "./middlewares";
+import produce from 'immer'
+import { createContext } from '@tarojs/taro'
+import Global from './global'
+import { actionMiddlewares, applyMiddlewares } from './middlewares'
 
-const initialProviderState: Global["State"] = {};
-const GlobalContext: any = createContext(initialProviderState);
-const Consumer = GlobalContext.Consumer;
+const initialProviderState: Global['State'] = {}
+const GlobalContext: any = createContext(initialProviderState)
+const Consumer = GlobalContext.Consumer
 
 // console.group polyfill
 if (!console.group) {
-  const groups: any[] = [];
-  const hr = "-".repeat(80); // 80 dashes row line
+  const groups: any[] = []
+  const hr = '-'.repeat(80) // 80 dashes row line
   console.group = function logGroupStart(label: any) {
-    groups.push(label);
-    console.log("%c \nBEGIN GROUP: %c", hr, label);
+    groups.push(label)
+    console.log('%c \nBEGIN GROUP: %c', hr, label)
     console.groupEnd = function logGroupEnd() {
-      console.log("END GROUP: %c\n%c", groups.pop(), hr);
-    };
-  };
+      console.log('END GROUP: %c\n%c', groups.pop(), hr)
+    }
+  }
 }
 
 const consumerAction = (
@@ -33,54 +33,54 @@ const consumerAction = (
     modelName: modelContext.modelName,
     newState: null,
     params,
-    type: "outer"
-  };
-  await applyMiddlewares(actionMiddlewares, context);
-};
+    type: 'outer'
+  }
+  await applyMiddlewares(actionMiddlewares, context)
+}
 
 const consumerActions = (
   actions: Actions,
   modelContext: { modelName: string }
 ) => {
-  const ret: any = {};
+  const ret: any = {}
   Object.entries<Action>(actions).forEach(([key, action]) => {
-    ret[key] = consumerAction(action, modelContext);
-  });
-  return ret;
-};
+    ret[key] = consumerAction(action, modelContext)
+  })
+  return ret
+}
 
 const setPartialState = (
-  name: keyof typeof Global["State"],
+  name: keyof typeof Global['State'],
   partialState:
-    | typeof Global["State"]
-    | ((state: typeof Global["State"]["name"]) => void)
+    | typeof Global['State']
+    | ((state: typeof Global['State']['name']) => void)
 ) => {
-  if (typeof partialState === "function") {
-    let state = Global.State[name];
-    console.log("-> state", state);
-    console.log("-> partialState", partialState);
-    state = produce(state, partialState);
+  if (typeof partialState === 'function') {
+    let state = Global.State[name]
+    console.log('-> state', state)
+    console.log('-> partialState', partialState)
+    state = produce(state, partialState)
     Global.State = produce(Global.State, s => {
-      s[name] = state;
-    });
+      s[name] = state
+    })
   } else {
     Global.State = produce(Global.State, s => {
       s[name] = {
         ...s[name],
         ...partialState
-      };
-    });
+      }
+    })
   }
-  return Global.State;
-};
+  return Global.State
+}
 
 const timeout = <T>(ms: number, data: T): Promise<T> =>
   new Promise(resolve =>
     setTimeout(() => {
-      console.log(ms);
-      resolve(data);
+      console.log(ms)
+      resolve(data)
     }, ms)
-  );
+  )
 
 const getInitialState = async <T extends any>(context?: T) => {
   await Promise.all(
@@ -91,24 +91,24 @@ const getInitialState = async <T extends any>(context?: T) => {
         modelName === context.modelName ||
         context.modelName.indexOf(modelName) !== -1
       ) {
-        const asyncGetter = Global.AsyncState[modelName];
-        const asyncState = asyncGetter ? await asyncGetter(context) : {};
+        const asyncGetter = Global.AsyncState[modelName]
+        const asyncState = asyncGetter ? await asyncGetter(context) : {}
         Global.State[modelName] = {
           ...Global.State[modelName],
           ...asyncState
-        };
+        }
       }
     })
-  );
-  return Global.State;
-};
+  )
+  return Global.State
+}
 
 const getCache = (modelName: string, actionName: string) => {
   const JSONString = localStorage.getItem(
     `__REACT_MODELX__${modelName}_${actionName}`
-  );
-  return JSONString ? JSON.parse(JSONString) : null;
-};
+  )
+  return JSONString ? JSON.parse(JSONString) : null
+}
 
 export {
   Consumer,
@@ -118,4 +118,4 @@ export {
   timeout,
   getCache,
   getInitialState
-};
+}
