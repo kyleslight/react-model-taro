@@ -1,11 +1,12 @@
-import produce from 'immer'
-import { createContext } from '@tarojs/taro'
-import Global from './global'
-import { actionMiddlewares, applyMiddlewares } from './middlewares'
+import produce from "immer";
+import Taro from "./taro";
+import Global from "./global";
+import { actionMiddlewares, applyMiddlewares } from "./middlewares";
 
-const initialProviderState: Global['State'] = {}
-const GlobalContext: any = createContext(initialProviderState)
-const Consumer = GlobalContext.Consumer
+const createContext = Taro.createContext;
+const initialProviderState: Global["State"] = {};
+const GlobalContext: any = createContext(initialProviderState);
+const Consumer = GlobalContext.Consumer;
 
 // console.group polyfill
 if (!console.group) {

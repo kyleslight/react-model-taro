@@ -1,11 +1,11 @@
 /// <reference path="./index.d.ts" />
 import '@babel/polyfill'
-import Taro from '@tarojs/taro'
-import { PureComponent, useState, useEffect } from '@tarojs/taro'
+import Taro from './taro'
 import Global from './global'
 import { Consumer, consumerActions, getInitialState } from './helper'
 import { actionMiddlewares, applyMiddlewares, middlewares } from './middlewares'
 
+const { PureComponent, useEffect, useState } = Taro
 const isModelType = (input: any): input is ModelType => {
   return (input as ModelType).state !== undefined
 }
@@ -161,9 +161,7 @@ const getActions = (
 }
 
 const useStore = (modelName: string, depActions?: string[]) => {
-  console.log('-> useStore')
   const setState = useState(Global.State[modelName])[1]
-  console.log('-> setState', setState)
 
   useEffect(() => {
     Global.uid += 1
