@@ -4,6 +4,12 @@ The Hooks State management library for Taro
 
 > Requirement: Taro 1.3.0 and above, from this version you can use Hooks in Taro
 
+## Installation
+
+```bash
+npm i react-model-taro -S
+```
+
 ## Quick Usage
 
 In your empty Taro Project Components:
@@ -32,31 +38,45 @@ Use store from `react-model-taro`:
 ```jsx
 import { Model } from 'react-model-taro'
 
-// define model
+// Define Model
 const Todo = {
   state: {
-    items: ['Install react-model', 'Read github docs', 'Build App']
+    curTodo: "",
+    items: ["Add some todo"]
   },
   actions: {
-    add: (todo, { state }) => {
-      state.items.push(todo)
-
+    updateTodo: todo => {
       return {
-        items: state.items
-      }
+        curTodo: todo
+      };
+    },
+    addTodo: (todo, { state }) => {
+      return {
+        items: state.items.concat([todo]),
+        curTodo: ""
+      };
     }
   }
-}
+};
 
 // Model Register
 const { useStore } = Model(Todo)
 
-const [{ items }] = useStore()
+const [{ items, curTodo }, { addTodo, updateTodo }] = useStore();
 
 ...
-<View>
+<View className="container">
+  <Input
+    value={curTodo}
+    onInput={e => {
+      updateTodo(e.detail.value);
+    }}
+    onConfirm={e => {
+      addTodo(e.detail.value);
+    }}
+  />
   {items.map((item, index) => {
-    return <View key={index}>{item}</View>
+    return <View key={index}>{item}</View>;
   })}
 </View>
 ```
