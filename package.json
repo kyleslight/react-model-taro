@@ -1,6 +1,6 @@
 {
   "name": "react-model-taro",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The Hooks State management library for Taro",
   "main": "./dist/react-model-taro.js",
   "umd:main": "./dist/react-model-taro.umd.js",

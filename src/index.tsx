@@ -1,5 +1,4 @@
 /// <reference path="./index.d.ts" />
-import '@babel/polyfill'
 import Taro from './taro'
 import Global from './global'
 import { Consumer, consumerActions, getInitialState } from './helper'
